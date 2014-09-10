@@ -4,8 +4,11 @@ namespace MrClean\Test;
 
 class TestBase extends \PHPUnit_Framework_TestCase {
 
+    protected $cleaner;
+
     protected function setUp()
     {
+        $this->cleaner = new \MrClean\MrClean;
     }
 
     protected function tearDown()
@@ -16,7 +19,7 @@ class TestBase extends \PHPUnit_Framework_TestCase {
 
     public function it_does_nothing()
     {
-    	// sure does
+        // sure does
     }
 
 }

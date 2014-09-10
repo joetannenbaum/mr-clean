@@ -9,9 +9,7 @@ class MrCleanTest extends TestBase
 
 	public function it_can_use_a_function_to_clean_a_string()
 	{
-		$cleaner = new \MrClean\MrClean();
-
-		$result = $cleaner->cleaners(['trim'])
+		$result = $this->cleaner->cleaners(['trim'])
 							->scrub(' What is the deal');
 
 		$this->assertEquals('What is the deal', $result);
@@ -21,9 +19,7 @@ class MrCleanTest extends TestBase
 
 	public function it_can_use_a_function_to_clean_an_array()
 	{
-		$cleaner = new \MrClean\MrClean();
-
-		$result = $cleaner->cleaners(['trim'])
+		$result = $this->cleaner->cleaners(['trim'])
 							->scrub([' What is the deal', 'How is it going? ']);
 
 		$this->assertEquals(['What is the deal', 'How is it going?'], $result);
@@ -33,9 +29,7 @@ class MrCleanTest extends TestBase
 
 	public function it_can_use_multiple_functions_to_clean_an_array()
 	{
-		$cleaner = new \MrClean\MrClean();
-
-		$result = $cleaner->cleaners(['htmlentities', 'trim'])
+		$result = $this->cleaner->cleaners(['htmlentities', 'trim'])
 							->scrub(['This & That ', ' How is it going?']);
 
 		$this->assertEquals(['This &amp; That', 'How is it going?'], $result);
@@ -45,9 +39,7 @@ class MrCleanTest extends TestBase
 
 	public function it_can_use_a_function_to_clean_an_array_of_arrays()
 	{
-		$cleaner = new \MrClean\MrClean();
-
-		$result = $cleaner->cleaners(['trim'])
+		$result = $this->cleaner->cleaners(['trim'])
 							->scrub([
 								[' What is the deal', ' How is it going?'],
 								[' Who is that?', ' What is up?'],
@@ -64,9 +56,7 @@ class MrCleanTest extends TestBase
 
 	public function it_can_use_a_function_to_clean_an_array_of_objects()
 	{
-		$cleaner = new \MrClean\MrClean();
-
-		$result = $cleaner->cleaners(['trim'])
+		$result = $this->cleaner->cleaners(['trim'])
 							->scrub([
 								(object) ['greeting' => 'How is it going?'],
 								(object) ['greeting' => 'What is up?'],
@@ -83,9 +73,7 @@ class MrCleanTest extends TestBase
 
 	public function it_can_clean_a_nested_array_of_arrays_with_a_function()
 	{
-		$cleaner = new \MrClean\MrClean();
-
-		$result = $cleaner->cleaners(['trim'])
+		$result = $this->cleaner->cleaners(['trim'])
 							->scrub([
 								[
 									[' What is the deal', ' How is it going?']
@@ -110,9 +98,7 @@ class MrCleanTest extends TestBase
 
 	public function it_can_clean_a_nested_array_of_mixed_types_with_a_function()
 	{
-		$cleaner = new \MrClean\MrClean();
-
-		$result = $cleaner->cleaners(['trim'])
+		$result = $this->cleaner->cleaners(['trim'])
 							->scrub([
 								[
 									(object) [
