@@ -45,8 +45,8 @@ class MrClean {
     /**
      * Clean the value based on the cleaners specified
      *
-     * @param string $dirty
-     * @return string
+     * @param string|array $dirty
+     * @return string|array
      */
 
     public function scrub($dirty)
