@@ -10,10 +10,10 @@ class CleanKeysTest extends TestCase
     public function it_can_clean_only_one_key()
     {
         $result = $this->cleaner->cleaners(['name' => ['trim']])
-                            ->scrub([
-                                'name' => ' Joe',
-                                'job'  => ' Developer'
-                            ]);
+                                ->scrub([
+                                    'name' => ' Joe',
+                                    'job'  => ' Developer'
+                                ]);
 
         $scrubbed = [
                         'name' => 'Joe',
@@ -31,10 +31,10 @@ class CleanKeysTest extends TestCase
                                         'name' => ['trim'],
                                         'job'  => ['htmlentities'],
                                     ])
-                            ->scrub([
-                                'name' => ' Joe',
-                                'job'  => ' Developer & Such'
-                            ]);
+                                    ->scrub([
+                                        'name' => ' Joe',
+                                        'job'  => ' Developer & Such'
+                                    ]);
 
         $scrubbed = [
                         'name' => 'Joe',
@@ -52,10 +52,10 @@ class CleanKeysTest extends TestCase
                                         'name' => ['trim'],
                                         'job'  => ['htmlentities'],
                                     ])
-                            ->scrub((object) [
-                                'name' => ' Joe',
-                                'job'  => ' Developer & Such'
-                            ]);
+                                    ->scrub((object) [
+                                        'name' => ' Joe',
+                                        'job'  => ' Developer & Such'
+                                    ]);
 
         $scrubbed = (object) [
                         'name' => 'Joe',
@@ -74,10 +74,10 @@ class CleanKeysTest extends TestCase
                                         'name' => ['trim'],
                                         'job'  => ['htmlentities'],
                                     ])
-                            ->scrub([
-                                'name' => ' <strong>Joe</strong>',
-                                'job'  => ' <em>Developer</em> & Such'
-                            ]);
+                                    ->scrub([
+                                        'name' => ' <strong>Joe</strong>',
+                                        'job'  => ' <em>Developer</em> & Such'
+                                    ]);
 
         $scrubbed = [
                         'name' => 'Joe',
