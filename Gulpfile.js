@@ -5,7 +5,7 @@ var phpunit = require("gulp-phpunit");
 
 gulp.task("tests", function ()
 {
-	gulp.src("./tests/")
+	gulp.src("./tests/TestCase.php")
         .pipe( run("clear") )
     		.pipe( phpunit("phpunit", {
     			debug: true,
