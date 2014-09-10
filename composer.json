@@ -1,0 +1,25 @@
+{
+    "name": "joetannenbaum/mr-clean",
+    "description": "",
+    "keywords": [],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joe Tannenbaum",
+            "email": "hey@joe.codes"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "MrClean\\": "src/",
+            "MrClean\\Test\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable"
+}
