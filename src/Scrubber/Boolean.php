@@ -19,7 +19,7 @@ class Boolean extends BaseScrubber {
     /**
      * Convert the string to a boolean
      *
-     * @return string|null
+     * @return boolean
      */
 
     public function scrub()

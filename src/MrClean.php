@@ -45,14 +45,13 @@ class MrClean {
     /**
      * Clean the value based on the cleaners specified
      *
-     * @param string $value
+     * @param string $dirty
      * @return string
      */
 
     public function scrub($dirty)
     {
-        $current = array_merge($this->pre, $this->cleaners, $this->post);
-
+        $current   = array_merge($this->pre, $this->cleaners, $this->post);
         $sanitizer = new Sanitizer($current, $this->registered);
 
         return $sanitizer->sanitize($dirty);
@@ -61,7 +60,7 @@ class MrClean {
     /**
      * Register class(es) as a cleaner
      *
-     * @param string|array $class
+     * @param string|array $classes
      */
 
     public function register($classes)

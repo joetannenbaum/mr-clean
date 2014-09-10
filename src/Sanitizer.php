@@ -176,6 +176,13 @@ class Sanitizer {
         return new $class($value);
     }
 
+    /**
+     * Get just the base name for the Scrubber class
+     *
+     * @param string $scrubber
+     * @return string
+     */
+
     protected function getScrubberShortClassName($scrubber)
     {
         $scrubber = str_replace(['-', '_'], ' ', $scrubber);
