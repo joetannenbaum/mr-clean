@@ -83,7 +83,7 @@ class MrClean {
            return $this;
         }
 
-        throw new \InvalidArgumentException("Unknown method [{$requested_method}] called.");
+        throw new \BadMethodCallException("Unknown method [{$requested_method}] called.");
     }
 
 }

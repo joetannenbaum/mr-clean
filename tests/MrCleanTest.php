@@ -126,4 +126,13 @@ class MrCleanTest extends TestCase
 
 		$this->assertEquals($scrubbed, $result);
 	}
+
+	/** @test */
+
+	public function it_alerts_the_user_when_they_call_a_non_existent_method()
+	{
+		$this->setExpectedException('BadMethodCallException');
+
+		$this->cleaner->somethingThatDoesntExist();
+	}
 }
