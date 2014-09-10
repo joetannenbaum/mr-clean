@@ -16,14 +16,14 @@ class Boolean extends BaseScrubber {
                             'false',
                         ];
 
-	/**
-	 * Convert the string to a boolean
+    /**
+     * Convert the string to a boolean
      *
-	 * @return string|null
-	 */
+     * @return string|null
+     */
 
-	public function scrub()
-	{
+    public function scrub()
+    {
         $this->value = strtolower(trim($this->value));
 
         if (empty($this->value)) {
@@ -31,6 +31,6 @@ class Boolean extends BaseScrubber {
         }
 
         return !in_array($this->value, $this->falses);
-	}
+    }
 
 }

@@ -4,43 +4,52 @@ namespace MrClean;
 
 class Sanitizer {
 
-	/**
-	 * The set of cleaners to apply
-	 *
-	 * @var array $cleaners
-	 */
+    /**
+     * The set of cleaners to apply
+     *
+     * @var array $cleaners
+     */
 
-	protected $cleaners = [];
+    protected $cleaners = [];
 
-	public function __construct(array $cleaners)
-	{
-		$this->cleaners = $cleaners;
-	}
+    /**
+     * Registered cleaner classes
+     *
+     * @var array $registered
+     */
 
-	/**
-	 * Router to correct type of sanitization
-	 *
-	 * @param array|object|string $dirty
-	 * @return array|object|string
-	 */
+    protected $registered = [];
+
+    public function __construct(array $cleaners, array $registered)
+    {
+        $this->cleaners   = $cleaners;
+        $this->registered = $registered;
+    }
+
+    /**
+     * Router to correct type of sanitization
+     *
+     * @param array|object|string $dirty
+     * @return array|object|string
+     */
 
     public function sanitize($dirty)
     {
-    	if (is_object($dirty)) {
-    		return $this->sanitizeObject($dirty);
-    	} elseif (is_array($dirty)) {
-    		return $this->sanitizeArray($dirty);
-    	} else {
-    		return $this->sanitizeString($dirty);
-    	}
+        if (is_object($dirty)) {
+           return $this->sanitizeObject($dirty);
+        } elseif (is_array($dirty)) {
+           return $this->sanitizeArray($dirty);
+        } else {
+           return $this->sanitizeString($dirty);
+        }
     }
 
-	/**
-	 * Clean a basic array
-	 *
-	 * @param array $array
-	 * @return array
-	 */
+    /**
+     * Clean a basic array
+     *
+     * @param array $array
+     * @return array
+     */
 
     protected function sanitizeArray($array)
     {
@@ -51,12 +60,12 @@ class Sanitizer {
         return $array;
     }
 
-	/**
-	 * Clean an object
-	 *
-	 * @param object $object
-	 * @return object
-	 */
+    /**
+     * Clean an object
+     *
+     * @param object $object
+     * @return object
+     */
 
     protected function sanitizeObject($object)
     {
@@ -78,9 +87,9 @@ class Sanitizer {
     {
         foreach ($this->cleaners as $cleaner) {
             if ($this->isScrubber($cleaner)) {
-            	$value = $this->getScrubber($cleaner, $value)->scrub();
-           	} elseif (function_exists($cleaner)) {
-            	$value = $cleaner($value);
+                $value = $this->getScrubber($cleaner, $value)->scrub();
+            } elseif (function_exists($cleaner)) {
+                $value = $cleaner($value);
             }
         }
 
@@ -96,7 +105,41 @@ class Sanitizer {
 
     protected function isScrubber($scrubber)
     {
-    	return class_exists($this->scrubberClassName($scrubber));
+        $registered = $this->isRegistered($scrubber);
+
+        if ($this->isRegistered($scrubber)) {
+            return true;
+        }
+
+        return class_exists($this->getScrubberClassName($scrubber));
+    }
+
+    /**
+     * Check to see if this is a registered cleaner
+     *
+     * @param string $scrubber
+     * @return boolean
+     */
+
+    protected function isRegistered($scrubber)
+    {
+        $class = $this->getScrubberShortClassName($scrubber);
+
+        return array_key_exists($class, $this->registered);
+    }
+
+    /**
+     * Get the registered cleaner class name
+     *
+     * @param string $scrubber
+     * @return string
+     */
+
+    protected function getRegisteredClassName($scrubber)
+    {
+        $class = $this->getScrubberShortClassName($scrubber);
+
+        return $this->registered[$class];
     }
 
     /**
@@ -109,9 +152,21 @@ class Sanitizer {
 
     protected function getScrubber($scrubber, $value)
     {
-    	$class = $this->scrubberClassName($scrubber);
+        if ($this->isRegistered($scrubber)) {
+            $class = $this->getRegisteredClassName($scrubber);
+        } else {
+            $class = $this->getScrubberClassName($scrubber);
+        }
 
-    	return new $class($value);
+        return new $class($value);
+    }
+
+    protected function getScrubberShortClassName($scrubber)
+    {
+        $scrubber = str_replace(['-', '_'], ' ', $scrubber);
+        $scrubber = ucwords($scrubber);
+
+        return str_replace(' ', '', $scrubber);
     }
 
     /**
@@ -121,11 +176,9 @@ class Sanitizer {
      * @return string
      */
 
-    protected function scrubberClassName($scrubber)
+    protected function getScrubberClassName($scrubber)
     {
-		$scrubber = str_replace(['-', '_'], ' ', $scrubber);
-		$scrubber = ucwords($scrubber);
 
-		return 'MrClean\Scrubber\\' . str_replace(' ', '', $scrubber);
+       return 'MrClean\Scrubber\\' . $this->getScrubberShortClassName($scrubber);
     }
 }
