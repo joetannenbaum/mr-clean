@@ -89,6 +89,15 @@ class Sanitizer {
         return $this->runCleaners($value, $this->cleaners, $key);
     }
 
+    /**
+     * Run the array of cleaners on the value, with an optional key to compare against
+     *
+     * @param string $value
+     * @param array $cleaners
+     * @param string $key
+     * @return string
+     */
+
     protected function runCleaners($value, $cleaners, $key = null)
     {
         foreach ($cleaners as $cleaner_key => $cleaner) {
