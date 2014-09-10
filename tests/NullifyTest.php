@@ -2,7 +2,7 @@
 
 namespace MrClean\Test;
 
-class NullifyTest extends TestBase
+class NullifyTest extends TestCase
 {
 
 	/** @test */

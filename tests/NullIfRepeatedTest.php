@@ -2,7 +2,7 @@
 
 namespace MrClean\Test;
 
-class NullIfRepeatedTest extends TestBase
+class NullIfRepeatedTest extends TestCase
 {
 
 	/** @test */

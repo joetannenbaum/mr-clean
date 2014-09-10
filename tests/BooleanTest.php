@@ -2,7 +2,7 @@
 
 namespace MrClean\Test;
 
-class BooleanTest extends TestBase
+class BooleanTest extends TestCase
 {
 
 	/** @test */

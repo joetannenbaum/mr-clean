@@ -2,7 +2,7 @@
 
 namespace MrClean\Test;
 
-class StripPhoneNumberTest extends TestBase
+class StripPhoneNumberTest extends TestCase
 {
 
 	/** @test */
