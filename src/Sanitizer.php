@@ -33,14 +33,14 @@ class Sanitizer {
      * @return array|object|string
      */
 
-    public function sanitize($dirty)
+    public function sanitize($dirty, $key = null)
     {
         if (is_object($dirty)) {
            return $this->sanitizeObject($dirty);
         } elseif (is_array($dirty)) {
            return $this->sanitizeArray($dirty);
         } else {
-           return $this->sanitizeString($dirty);
+           return $this->sanitizeString($dirty, $key);
         }
     }
 
@@ -54,7 +54,7 @@ class Sanitizer {
     protected function sanitizeArray($array)
     {
         foreach ($array as $key => $value) {
-            $array[$key] = $this->sanitize($value);
+            $array[$key] = $this->sanitize($value, $key);
         }
 
         return $array;
@@ -70,7 +70,7 @@ class Sanitizer {
     protected function sanitizeObject($object)
     {
         foreach ($object as $key => $value) {
-            $object->$key = $this->sanitize($value);
+            $object->$key = $this->sanitize($value, $key);
         }
 
         return $object;
@@ -80,12 +80,29 @@ class Sanitizer {
      * Sanitize the string with the current set of cleaners
      *
      * @param string $value
+     * @param string|null $key
      * @return string
      */
 
-    protected function sanitizeString($value)
+    protected function sanitizeString($value, $key)
     {
-        foreach ($this->cleaners as $cleaner) {
+        return $this->runCleaners($value, $this->cleaners, $key);
+    }
+
+    protected function runCleaners($value, $cleaners, $key = null)
+    {
+        foreach ($cleaners as $cleaner_key => $cleaner) {
+            // Do we have an array of cleaners for a specific key?
+            if (is_array($cleaner)) {
+                if ($cleaner_key == $key) {
+                    // If it's this key, run them
+                    return $this->runCleaners($value, $cleaner);
+                } else {
+                    // Otherwise, skip them
+                    continue;
+                }
+            }
+
             if ($this->isScrubber($cleaner)) {
                 $value = $this->getScrubber($cleaner, $value)->scrub();
             } elseif (function_exists($cleaner)) {
@@ -105,8 +122,6 @@ class Sanitizer {
 
     protected function isScrubber($scrubber)
     {
-        $registered = $this->isRegistered($scrubber);
-
         if ($this->isRegistered($scrubber)) {
             return true;
         }
