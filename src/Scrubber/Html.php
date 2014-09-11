@@ -30,6 +30,12 @@ class Html extends BaseScrubber {
         'h6',
     ];
 
+    /**
+     * An array of regexes for items to be replaced
+     *
+     * @var array $replace
+     */
+
     protected $replace = [
         '/<(.*)>[\s]*<\/\1>/'   => '',      // empty tags (no content)
         '/<(.*)>[\s]*<\1>/'     => '<$1>',  // repeated opening tags

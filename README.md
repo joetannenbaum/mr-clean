@@ -20,6 +20,7 @@ Mr. Clean is an extendible PHP sanitizer that allows you to easily clean strings
 + [Available Scrubbers](#available-scrubbers)
     + [Boolean](#boolean)
     + [HTML](#html)
+    + [Strip CSS Attributes](#strip-css-attributes)
     + [Nullify](#nullify)
     + [Null If Repeated](#null-if-repeated)
     + [Strip Phone Number](#strip-phone-number)
@@ -233,6 +234,18 @@ $dirty = '<p><p>Some bad HTML here.</p><hr /><em></em><div>Soon to be cleaner.</
 $scrubbed = $cleaner->scrubbers(['html'])->scrub( $dirty );
 
 // <p>Some bad HTML here.</p><div>Soon to be cleaner.</div>
+```
+
+### Strip CSS Attributes
+
+Strips the `style`, `class`, and `id` attributes off of all HTML elements.
+
+```php
+$dirty = '<p style="font-weight:bold;" id="bold-el" class="boldest">This was once bold.</p>';
+
+$scrubbed = $cleaner->scrubbers(['strip_css_attributes'])->scrub($dirty);
+
+// <p>This was once bold.</p>
 ```
 
 ### Nullify
