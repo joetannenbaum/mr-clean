@@ -5,12 +5,12 @@ namespace MrClean;
 class Sanitizer {
 
     /**
-     * The set of cleaners to apply
+     * The set of scrubbers to apply
      *
-     * @var array $cleaners
+     * @var array $scrubbers
      */
 
-    protected $cleaners = [];
+    protected $scrubbers = [];
 
     /**
      * Registered cleaner classes
@@ -20,9 +20,9 @@ class Sanitizer {
 
     protected $registered = [];
 
-    public function __construct(array $cleaners, array $registered)
+    public function __construct(array $scrubbers, array $registered)
     {
-        $this->cleaners   = $cleaners;
+        $this->scrubbers  = $scrubbers;
         $this->registered = $registered;
     }
 
@@ -77,7 +77,7 @@ class Sanitizer {
     }
 
     /**
-     * Sanitize the string with the current set of cleaners
+     * Sanitize the string with the current set of scrubbers
      *
      * @param string $value
      * @param string|null $key
@@ -86,36 +86,35 @@ class Sanitizer {
 
     protected function sanitizeString($value, $key)
     {
-        return $this->runCleaners($value, $this->cleaners, $key);
+        return $this->runScrubbers($value, $this->scrubbers, $key);
     }
 
     /**
-     * Run the array of cleaners on the value, with an optional key to compare against
+     * Run the array of scrubbers on the value, with an optional key to compare against
      *
      * @param string $value
-     * @param array $cleaners
+     * @param array $scrubbers
      * @param string $key
      * @return string
      */
 
-    protected function runCleaners($value, $cleaners, $key = null)
+    protected function runScrubbers($value, $scrubbers, $key = null)
     {
-        foreach ($cleaners as $cleaner_key => $cleaner) {
-            // Do we have an array of cleaners for a specific key?
-            if (is_array($cleaner)) {
-                if ($cleaner_key == $key) {
-                    // If it's this key, run them
-                    return $this->runCleaners($value, $cleaner);
-                } else {
-                    // Otherwise, skip them
+        foreach ($scrubbers as $scrubber_key => $scrubber) {
+            // Do we have an array of scrubbers for a specific key?
+            if (is_array($scrubber)) {
+                if ($scrubber_key != $key) {
+                    // If it's not for this key, keep on moving
                     continue;
                 }
+
+                return $this->runScrubbers($value, $scrubber);
             }
 
-            if ($this->isScrubber($cleaner)) {
-                $value = $this->getScrubber($cleaner, $value)->scrub();
-            } elseif (function_exists($cleaner)) {
-                $value = $cleaner($value);
+            if ($this->isScrubberClass($scrubber)) {
+                $value = $this->getScrubber($scrubber, $value)->scrub();
+            } elseif (function_exists($scrubber)) {
+                $value = $scrubber($value);
             }
         }
 
@@ -129,7 +128,7 @@ class Sanitizer {
      * @return boolean
      */
 
-    protected function isScrubber($scrubber)
+    protected function isScrubberClass($scrubber)
     {
         if ($this->isRegistered($scrubber)) {
             return true;
