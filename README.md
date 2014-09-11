@@ -99,6 +99,54 @@ $scrubbed = $cleaner->cleaners(['trim'])->scrub([
     ]);
 ```
 
+## Cleaning Specific Keys
+
+Sometimes you don't want to use the same scrubbers on every key in an object or associative array. No problem. Just let Mr. Clean know which ones to apply where and he'll take care of it:
+
+```php
+$scrubbers = [
+    'first_name' => ['trim'],
+    'last_name'  => ['stripslashes', 'htmlentities'],
+];
+
+$data = [
+    [
+        'first_name' => 'Joe ',
+        'last_name'  => 'O\'Donnell',
+    ],
+    [
+        'first_name' => ' Harold',
+        'last_name'  => 'Frank & Beans',
+    ],
+];
+
+$scrubbed = $cleaner->cleaners($scrubbers)->scrub($data);
+
+/*
+[
+    [
+        'first_name' => 'Joe',
+        'last_name'  => "O'Donnell",
+    ],
+    [
+        'first_name' => 'Harold',
+        'last_name'  => 'Frank &amp; Beans',
+    ],
+]
+*/
+```
+
+You can also still specify scrubbers that should run for everything:
+
+```php
+$scrubbers = [
+    'strip_tags',
+    'first_name' => ['trim'],
+    'last_name'  => ['stripslashes', 'htmlentities'],
+    'htmlspecialchars',
+];
+```
+
 ## Available Scrubbers
 
 Mr. Clean comes with a bevy of pre-built scrubbers you can use:
@@ -121,7 +169,7 @@ $movies_seen = [
 $scrubbed = $cleaner->cleaners(['boolean'])->scrub( $movies_seen );
 
 /*
-$movies_seen = [
+[
     'The Dark Knight'   => true,
     'The Green Lantern' => false,
     'The Avengers'      => true,
