@@ -12,7 +12,7 @@
 + [Installation](#installation)
 + [Basic Usage](#basic-usage)
 + [Scrubbers](#scrubbers)
-+ [Pre/Post](#pre-post)
++ [Pre/Post](#prepost)
 + [What Can Be Cleaned](#what-can-be-cleaned)
 + [Cleaning Specific Keys](#cleaning-specific-keys)
 + [Available Scrubbers](#available-scrubbers)
