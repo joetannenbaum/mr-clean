@@ -5,44 +5,44 @@ namespace MrClean\Test;
 class NullifyTest extends TestCase
 {
 
-	/** @test */
+    /** @test */
 
-	public function it_will_nullify_an_empty_string()
-	{
-		$result = $this->cleaner->scrubbers(['nullify'])
-							->scrub('');
+    public function it_will_nullify_an_empty_string()
+    {
+        $result = $this->cleaner->scrubbers(['nullify'])
+                            ->scrub('');
 
-		$this->assertSame(null, $result);
-	}
+        $this->assertSame(null, $result);
+    }
 
-	/** @test */
+    /** @test */
 
-	public function it_will_nullify_a_whitespace_string()
-	{
-		$result = $this->cleaner->scrubbers(['nullify'])
-							->scrub(' ');
+    public function it_will_nullify_a_whitespace_string()
+    {
+        $result = $this->cleaner->scrubbers(['nullify'])
+                            ->scrub(' ');
 
-		$this->assertSame(null, $result);
-	}
+        $this->assertSame(null, $result);
+    }
 
-	/** @test */
+    /** @test */
 
-	public function it_will_not_nullify_a_non_empty_string()
-	{
-		$result = $this->cleaner->scrubbers(['nullify'])
-							->scrub('hi');
+    public function it_will_not_nullify_a_non_empty_string()
+    {
+        $result = $this->cleaner->scrubbers(['nullify'])
+                            ->scrub('hi');
 
-		$this->assertSame('hi', $result);
-	}
+        $this->assertSame('hi', $result);
+    }
 
-	/** @test */
+    /** @test */
 
-	public function it_will_not_nullify_an_empty_falsee_string()
-	{
-		$result = $this->cleaner->scrubbers(['nullify'])
-							->scrub(0);
+    public function it_will_not_nullify_an_empty_falsee_string()
+    {
+        $result = $this->cleaner->scrubbers(['nullify'])
+                            ->scrub(0);
 
-		$this->assertSame(0, $result);
-	}
+        $this->assertSame(0, $result);
+    }
 
 }

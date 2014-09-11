@@ -70,7 +70,7 @@ class CleanKeysTest extends TestCase
     public function it_can_run_cleaners_on_all_and_specific_keys()
     {
         $result = $this->cleaner->scrubbers([
-        								'strip_tags',
+                                        'strip_tags',
                                         'name' => ['trim'],
                                         'job'  => ['htmlentities'],
                                     ])
