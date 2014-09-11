@@ -50,9 +50,9 @@ $scrubbers = [
 $scrubbed = $cleaner->cleaners($scrubbers)->scrub('I\'m not that dirty.');
 ```
 
-Scrubbers should always be passed as an array, and will be run in the order that you specify, the resulting object will be returned.
+Scrubbers should always be passed as an array, and will be run in the order that you specify.
 
-Any single argument string manipulation function can be used. To reference a class, simply convert the StudlyCase to snake_case. In the example above, `remove_weird_characters` refers to a class named `RemoveWeirdCharacters`.
+Any single argument string manipulation function can be used. To reference a class, simply convert the StudlyCase to snake_case. In the example above, `remove_weird_characters` refers to a (fictional) class named `RemoveWeirdCharacters`.
 
 ## What Can Be Cleaned
 
@@ -243,6 +243,58 @@ $scrubbed = $cleaner->cleaners(['strip_phone_number'])->scrub($dirty);
 [
     '5555555555',
     '1234567890',
-    '1987654321x888',];
+    '1987654321x888',
+];
+*/
+```
+
+### Extending
+
+You can register custom scrubbers with Mr. Clean.
+
+### Write a Scrubber
+
+First, write your class. All you have to do is extend `MrClean\Scrubber\BaseScrubber` which adheres to `MrClean\Scrubber\ScrubberInterface`. There is a single property, `value` available to you. This is the string you will manipulate:
+
+```php
+namespace Your\Namespace;
+
+use MrClean\Scrubber\BaseScrubber;
+
+class YourCustomScrubber extends BaseScrubber {
+
+    public function scrub()
+    {
+        return str_replace('!', '.', $this->value);
+    }
+
+}
+```
+
+And that's it. Now just register your scrubber with Mr. Clean.
+
+### Registering a Scrubber
+
+The `register` method will take a string indicating the full path of the class, or an array of class paths.
+
+```php
+$cleaner->register('Your\Namespace\YourCustomScrubber');
+```
+
+Now, go ahead and use it:
+
+```php
+$dirty = [
+    'I need to calm down!',
+    'Me too!',
+];
+
+$scrubbed = $cleaner->cleaners(['your_custom_scrubber'])->scrub($dirty);
+
+/*
+[
+    'I need to calm down.',
+    'Me too.',
+]
 */
 ```
