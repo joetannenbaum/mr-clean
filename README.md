@@ -40,13 +40,14 @@ $cleaner = new MrClean\MrClean();
 Scrubbers are the things that actually do the work. They can be either classes or functions, and you can assign as many as you want to clean your object.
 
 ```php
-$scrubbed = $cleaner->cleaners([
-                                'trim',
-                                'stripslashes',
-                                'strip_tags',
-                                'remove_weird_characters',
-                            ])
-                    ->scrub('I\'m not that dirty.');
+$scrubbers = [
+    'trim',
+    'stripslashes',
+    'strip_tags',
+    'remove_weird_characters',
+];
+
+$scrubbed = $cleaner->cleaners($scrubbers)->scrub('I\'m not that dirty.');
 ```
 
 Scrubbers should always be passed as an array, and will be run in the order that you specify, the resulting object will be returned.
@@ -174,5 +175,74 @@ $scrubbed = $cleaner->cleaners(['boolean'])->scrub( $movies_seen );
     'The Green Lantern' => false,
     'The Avengers'      => true,
 ];
+*/
+```
+
+### Nullify
+
+If a trimmed string doesn't have any length, null it out:
+
+```php
+$dirty = [
+    'cool',
+    'also cool',
+    ' ',
+    '    ',
+];
+
+$scrubbed = $cleaner->cleaners(['nullify'])->scrub($dirty);
+
+/*
+[
+    'cool',
+    'also cool',
+    null,
+    null,
+];
+*/
+```
+
+### Null If Repeated
+
+If a string is just a repeated character ('1111111' or 'aaaaaaaaa') and has a length greater than two, null it out:
+
+```php
+$dirty = [
+    '11111111',
+    '22',
+    'bbbbbbbb',
+    '333334',
+];
+
+$scrubbed = $cleaner->cleaners(['null_if_repeated'])->scrub($dirty);
+
+/*
+[
+    null,
+    '22',
+    null,
+    '333334',
+];
+*/
+```
+
+### Strip Phone Number
+
+Strip a phone number down to just the good bits, numbers and the letter 'x' (for extensions):
+
+```php
+$dirty = [
+    '555-555-5555',
+    '(123) 456-7890',
+    '198 765 4321 ext. 888',
+];
+
+$scrubbed = $cleaner->cleaners(['strip_phone_number'])->scrub($dirty);
+
+/*
+[
+    '5555555555',
+    '1234567890',
+    '1987654321x888',];
 */
 ```
