@@ -4,14 +4,14 @@ namespace MrClean;
 
 /**
  * @method \MrClean\MrClean pre(array $pre)
- * @method \MrClean\MrClean cleaners(array $cleaners)
+ * @method \MrClean\MrClean scrubbers(array $scrubbers)
  * @method \MrClean\MrClean post(array $post)
  */
 
 class MrClean {
 
     /**
-     * An array of cleaners to apply before every cleaner
+     * An array of scrubbers to apply before every cleaner
      *
      * @var array $pre
      */
@@ -19,15 +19,15 @@ class MrClean {
     protected $pre = [];
 
     /**
-     * An array of cleaners to apply
+     * An array of scrubbers to apply
      *
-     * @var array $cleaners
+     * @var array $scrubbers
      */
 
-    protected $cleaners = [];
+    protected $scrubbers = [];
 
     /**
-     * An array of cleaners to apply after every cleaner
+     * An array of scrubbers to apply after every cleaner
      *
      * @var array $post
      */
@@ -43,7 +43,7 @@ class MrClean {
     protected $registered = [];
 
     /**
-     * Clean the value based on the cleaners specified
+     * Clean the value based on the scrubbers specified
      *
      * @param string|array $dirty
      * @return string|array
@@ -51,7 +51,7 @@ class MrClean {
 
     public function scrub($dirty)
     {
-        $current   = array_merge($this->pre, $this->cleaners, $this->post);
+        $current   = array_merge($this->pre, $this->scrubbers, $this->post);
         $sanitizer = new Sanitizer($current, $this->registered);
 
         return $sanitizer->sanitize($dirty);
@@ -75,7 +75,7 @@ class MrClean {
 
     public function __call($requested_method, $arguments)
     {
-        if (in_array($requested_method, ['pre', 'post', 'cleaners']))
+        if (in_array($requested_method, ['pre', 'post', 'scrubbers']))
         {
            $this->$requested_method = reset( $arguments );
 

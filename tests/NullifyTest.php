@@ -9,7 +9,7 @@ class NullifyTest extends TestCase
 
 	public function it_will_nullify_an_empty_string()
 	{
-		$result = $this->cleaner->cleaners(['nullify'])
+		$result = $this->cleaner->scrubbers(['nullify'])
 							->scrub('');
 
 		$this->assertSame(null, $result);
@@ -19,7 +19,7 @@ class NullifyTest extends TestCase
 
 	public function it_will_nullify_a_whitespace_string()
 	{
-		$result = $this->cleaner->cleaners(['nullify'])
+		$result = $this->cleaner->scrubbers(['nullify'])
 							->scrub(' ');
 
 		$this->assertSame(null, $result);
@@ -29,7 +29,7 @@ class NullifyTest extends TestCase
 
 	public function it_will_not_nullify_a_non_empty_string()
 	{
-		$result = $this->cleaner->cleaners(['nullify'])
+		$result = $this->cleaner->scrubbers(['nullify'])
 							->scrub('hi');
 
 		$this->assertSame('hi', $result);
@@ -39,7 +39,7 @@ class NullifyTest extends TestCase
 
 	public function it_will_not_nullify_an_empty_falsee_string()
 	{
-		$result = $this->cleaner->cleaners(['nullify'])
+		$result = $this->cleaner->scrubbers(['nullify'])
 							->scrub(0);
 
 		$this->assertSame(0, $result);

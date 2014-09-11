@@ -47,7 +47,7 @@ $cleaner = new MrClean\MrClean();
 
 ## Scrubbers
 
-Scrubbers are the class and functions that actually do the work, and you can assign as many as you want to clean your object.
+Scrubbers are the classes and functions that actually do the work, and you can assign as many as you want to clean your object.
 
 ```php
 $scrubbers = [
@@ -57,7 +57,7 @@ $scrubbers = [
     'remove_weird_characters',
 ];
 
-$scrubbed = $cleaner->cleaners($scrubbers)->scrub('I\'m not that dirty.');
+$scrubbed = $cleaner->scrubbers($scrubbers)->scrub('I\'m not that dirty.');
 ```
 
 Scrubbers should always be passed as an array, and will be run in the order that you specify.
@@ -69,22 +69,22 @@ Any single argument string manipulation function can be used. To reference a cla
 Better question: what can't? An array of arrays, a string, an array of objects, a single object, you try it, Mr. Clean will probably be able to clean it. All of the following will work:
 
 ```php
-$scrubbed = $cleaner->cleaners(['trim'])->scrub('Holy string, Batman.');
+$scrubbed = $cleaner->scrubbers(['trim'])->scrub('Holy string, Batman.');
 
-$scrubbed = $cleaner->cleaners(['trim'])->scrub(['Holy', 'array', 'Batman']);
+$scrubbed = $cleaner->scrubbers(['trim'])->scrub(['Holy', 'array', 'Batman']);
 
-$scrubbed = $cleaner->cleaners(['trim'])->scrub([
+$scrubbed = $cleaner->scrubbers(['trim'])->scrub([
         ['Holy', 'array', 'of', 'arrays', 'Batman'],
         ['Holy', 'array', 'of', 'arrays', 'Batman'],
     ]);
 
-$scrubbed = $cleaner->cleaners(['trim'])->scrub((object) [
+$scrubbed = $cleaner->scrubbers(['trim'])->scrub((object) [
         'first_word'  => 'Holy',
         'second_word' => 'object',
         'third_word'  => 'Batman',
     ]);
 
-$scrubbed = $cleaner->cleaners(['trim'])->scrub([
+$scrubbed = $cleaner->scrubbers(['trim'])->scrub([
         (object) [
             'first_word'  => 'Holy',
             'second_word' => 'array',
@@ -101,7 +101,7 @@ $scrubbed = $cleaner->cleaners(['trim'])->scrub([
         ],
     ]);
 
-$scrubbed = $cleaner->cleaners(['trim'])->scrub([
+$scrubbed = $cleaner->scrubbers(['trim'])->scrub([
         (object) [
             'first_word'  => 'Holy',
             'second_word' => 'mixed',
@@ -131,7 +131,7 @@ $data = [
     ],
 ];
 
-$scrubbed = $cleaner->cleaners($scrubbers)->scrub($data);
+$scrubbed = $cleaner->scrubbers($scrubbers)->scrub($data);
 
 /*
 [
@@ -177,7 +177,7 @@ $movies_seen = [
     'The Avengers'      => 'yes',
 ];
 
-$scrubbed = $cleaner->cleaners(['boolean'])->scrub( $movies_seen );
+$scrubbed = $cleaner->scrubbers(['boolean'])->scrub( $movies_seen );
 
 /*
 [
@@ -200,7 +200,7 @@ $dirty = [
     '    ',
 ];
 
-$scrubbed = $cleaner->cleaners(['nullify'])->scrub($dirty);
+$scrubbed = $cleaner->scrubbers(['nullify'])->scrub($dirty);
 
 /*
 [
@@ -224,7 +224,7 @@ $dirty = [
     '333334',
 ];
 
-$scrubbed = $cleaner->cleaners(['null_if_repeated'])->scrub($dirty);
+$scrubbed = $cleaner->scrubbers(['null_if_repeated'])->scrub($dirty);
 
 /*
 [
@@ -247,7 +247,7 @@ $dirty = [
     '198 765 4321 ext. 888',
 ];
 
-$scrubbed = $cleaner->cleaners(['strip_phone_number'])->scrub($dirty);
+$scrubbed = $cleaner->scrubbers(['strip_phone_number'])->scrub($dirty);
 
 /*
 [
@@ -299,7 +299,7 @@ $dirty = [
     'Me too!',
 ];
 
-$scrubbed = $cleaner->cleaners(['your_custom_scrubber'])->scrub($dirty);
+$scrubbed = $cleaner->scrubbers(['your_custom_scrubber'])->scrub($dirty);
 
 /*
 [

@@ -11,7 +11,7 @@ class RegisterTest extends TestCase
     {
         $this->cleaner->register('MrClean\Test\Fake\TheReplacer');
 
-        $result = $this->cleaner->cleaners(['the_replacer'])
+        $result = $this->cleaner->scrubbers(['the_replacer'])
                                 ->scrub('This is just full of some esses.');
 
         $this->assertSame('Thim im jumt full of mome emmem.', $result);
@@ -26,7 +26,7 @@ class RegisterTest extends TestCase
                 'MrClean\Test\Fake\TheWrapper',
             ]);
 
-        $result = $this->cleaner->cleaners(['the_replacer', 'the_wrapper'])
+        $result = $this->cleaner->scrubbers(['the_replacer', 'the_wrapper'])
                                 ->scrub('This is just full of some esses.');
 
         $this->assertSame('!Thim im jumt full of mome emmem.!', $result);
@@ -42,7 +42,7 @@ class RegisterTest extends TestCase
                 'MrClean\Test\Fake\Boolean',
             ]);
 
-        $result = $this->cleaner->cleaners(['boolean'])
+        $result = $this->cleaner->scrubbers(['boolean'])
                                 ->scrub('This is just full of some esses.');
 
         $this->assertSame('booleaned!', $result);

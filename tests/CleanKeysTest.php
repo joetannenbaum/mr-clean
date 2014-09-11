@@ -9,7 +9,7 @@ class CleanKeysTest extends TestCase
 
     public function it_can_clean_only_one_key()
     {
-        $result = $this->cleaner->cleaners(['name' => ['trim']])
+        $result = $this->cleaner->scrubbers(['name' => ['trim']])
                                 ->scrub([
                                     'name' => ' Joe',
                                     'job'  => ' Developer'
@@ -27,7 +27,7 @@ class CleanKeysTest extends TestCase
 
     public function it_can_clean_several_keys()
     {
-        $result = $this->cleaner->cleaners([
+        $result = $this->cleaner->scrubbers([
                                         'name' => ['trim'],
                                         'job'  => ['htmlentities'],
                                     ])
@@ -48,7 +48,7 @@ class CleanKeysTest extends TestCase
 
     public function it_can_clean_several_keys_in_an_object()
     {
-        $result = $this->cleaner->cleaners([
+        $result = $this->cleaner->scrubbers([
                                         'name' => ['trim'],
                                         'job'  => ['htmlentities'],
                                     ])
@@ -69,7 +69,7 @@ class CleanKeysTest extends TestCase
 
     public function it_can_run_cleaners_on_all_and_specific_keys()
     {
-        $result = $this->cleaner->cleaners([
+        $result = $this->cleaner->scrubbers([
         								'strip_tags',
                                         'name' => ['trim'],
                                         'job'  => ['htmlentities'],
