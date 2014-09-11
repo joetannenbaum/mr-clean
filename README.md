@@ -10,8 +10,19 @@
 ## Table of Contents
 
 + [Installation](#installation)
++ [Basic Usage](#basic-usage)
++ [Scrubbers](#scrubbers)
++ [What Can Be Cleaned](#what-can-be-cleaned)
++ [Cleaning Specific Keys](#cleaning-specific-keys)
++ [Available Scrubbers](#available-scrubbers)
+    + [Boolean](#boolean)
+    + [Nullify](#nullify)
+    + [Null If Repeated](#null-if-repeated)
+    + [Strip Phone Number](#strip-phone-number)
++ [Extending](#extending)
+    + [Writing a Scrubber](#writing-a-scrubber)
+    + [Registering a Scrubber](#registering-a-scrubber)
 
-<!--
 ## Installation
 
 Using [composer](https://packagist.org/packages/joetannenbaum/mr-clean):
@@ -23,7 +34,6 @@ Using [composer](https://packagist.org/packages/joetannenbaum/mr-clean):
     }
 }
 ```
--->
 
 ## Basic Usage
 
@@ -37,7 +47,7 @@ $cleaner = new MrClean\MrClean();
 
 ## Scrubbers
 
-Scrubbers are the things that actually do the work. They can be either classes or functions, and you can assign as many as you want to clean your object.
+Scrubbers are the class and functions that actually do the work, and you can assign as many as you want to clean your object.
 
 ```php
 $scrubbers = [
@@ -248,11 +258,11 @@ $scrubbed = $cleaner->cleaners(['strip_phone_number'])->scrub($dirty);
 */
 ```
 
-### Extending
+## Extending
 
 You can register custom scrubbers with Mr. Clean.
 
-### Write a Scrubber
+### Writing a Scrubber
 
 First, write your class. All you have to do is extend `MrClean\Scrubber\BaseScrubber` which adheres to `MrClean\Scrubber\ScrubberInterface`. There is a single property, `value` available to you. This is the string you will manipulate:
 
