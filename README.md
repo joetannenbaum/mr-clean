@@ -12,6 +12,7 @@
 + [Installation](#installation)
 + [Basic Usage](#basic-usage)
 + [Scrubbers](#scrubbers)
++ [Pre/Post](#pre-post)
 + [What Can Be Cleaned](#what-can-be-cleaned)
 + [Cleaning Specific Keys](#cleaning-specific-keys)
 + [Available Scrubbers](#available-scrubbers)
@@ -63,6 +64,19 @@ $scrubbed = $cleaner->scrubbers($scrubbers)->scrub('I\'m not that dirty.');
 Scrubbers should always be passed as an array, and will be run in the order that you specify.
 
 Any single argument string manipulation function can be used. To reference a class, simply convert the StudlyCase to snake_case. In the example above, `remove_weird_characters` refers to a (fictional) class named `RemoveWeirdCharacters`.
+
+## Pre/Post
+
+To save some typing, you can set scrubbers to run every time before and after each cleaning:
+
+```php
+$cleaner->pre(['trim']);
+$cleaner->post(['htmlentities']);
+
+// trim will run before each of these, htmlentities after each
+$cleaner->scrubbers(['strip_tags'])->scrub('This should be cleaned.')
+$cleaner->scrubbers(['remove_weird_characters'])->scrub('So should this.')
+```
 
 ## What Can Be Cleaned
 
