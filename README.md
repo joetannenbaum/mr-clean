@@ -7,7 +7,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/joetannenbaum/mr-clean.svg?style=flat)](https://scrutinizer-ci.com/g/joetannenbaum/mr-clean)
 [![Total Downloads](https://img.shields.io/packagist/dt/joetannenbaum/mr-clean.svg?style=flat)](https://packagist.org/packages/joetannenbaum/mr-clean)
 
-Mr. Clean is an extendible PHP sanitizer that allows you to clean strings, arrays, objects, and anything in between.
+Mr. Clean is an extendible PHP sanitizer that allows you to easily clean strings, arrays, objects, and anything in between.
 
 ## Table of Contents
 
