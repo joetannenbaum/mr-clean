@@ -19,6 +19,7 @@ Mr. Clean is an extendible PHP sanitizer that allows you to easily clean strings
 + [Cleaning Specific Keys](#cleaning-specific-keys)
 + [Available Scrubbers](#available-scrubbers)
     + [Boolean](#boolean)
+    + [HTML](#html)
     + [Nullify](#nullify)
     + [Null If Repeated](#null-if-repeated)
     + [Strip Phone Number](#strip-phone-number)
@@ -202,6 +203,36 @@ $scrubbed = $cleaner->scrubbers(['boolean'])->scrub( $movies_seen );
     'The Avengers'      => true,
 ];
 */
+```
+
+### HTML
+
+Strips tags not on the whitelist, removes empty content tags, and repeated opening or closing tags. The whitelist includes:
+
++ a
++ p
++ div
++ strong
++ em
++ b
++ i
++ br
++ ul
++ ol
++ li
++ h1
++ h2
++ h3
++ h4
++ h5
++ h6
+
+```php
+$dirty = '<p><p>Some bad HTML here.</p><hr /><em></em><div>Soon to be cleaner.</div>';
+
+$scrubbed = $cleaner->scrubbers(['html'])->scrub( $dirty );
+
+// <p>Some bad HTML here.</p><div>Soon to be cleaner.</div>
 ```
 
 ### Nullify
