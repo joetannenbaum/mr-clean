@@ -30,14 +30,78 @@ Using [composer](https://packagist.org/packages/joetannenbaum/mr-clean):
 Fire it up like so:
 
 ```php
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 $cleaner = new MrClean\MrClean();
 ```
 
 ## Scrubbers
 
-Scrubbers are the classes that actually do the work, and Mr. Clean comes with a bevy of pre-built scrubbers you can use:
+Scrubbers are the things that actually do the work. They can be either classes or functions, and you can assign as many as you want to clean your object.
+
+```php
+$scrubbed = $cleaner->cleaners([
+                                'trim',
+                                'stripslashes',
+                                'strip_tags',
+                                'remove_weird_characters',
+                            ])
+                    ->scrub('I\'m not that dirty.');
+```
+
+Scrubbers should always be passed as an array, and will be run in the order that you specify, the resulting object will be returned.
+
+Any single argument string manipulation function can be used. To reference a class, simply convert the StudlyCase to snake_case. In the example above, `remove_weird_characters` refers to a class named `RemoveWeirdCharacters`.
+
+## What Can Be Cleaned
+
+Better question: what can't? An array of arrays, a string, an array of objects, a single object, you try it, Mr. Clean will probably be able to clean it. All of the following will work:
+
+```php
+$scrubbed = $cleaner->cleaners(['trim'])->scrub('Holy string, Batman.');
+
+$scrubbed = $cleaner->cleaners(['trim'])->scrub(['Holy', 'array', 'Batman']);
+
+$scrubbed = $cleaner->cleaners(['trim'])->scrub([
+        ['Holy', 'array', 'of', 'arrays', 'Batman'],
+        ['Holy', 'array', 'of', 'arrays', 'Batman'],
+    ]);
+
+$scrubbed = $cleaner->cleaners(['trim'])->scrub((object) [
+        'first_word'  => 'Holy',
+        'second_word' => 'object',
+        'third_word'  => 'Batman',
+    ]);
+
+$scrubbed = $cleaner->cleaners(['trim'])->scrub([
+        (object) [
+            'first_word'  => 'Holy',
+            'second_word' => 'array',
+            'third_word'  => 'of',
+            'fourth_word' => 'objects',
+            'fifth_word'  => 'Batman',
+        ],
+        (object) [
+            'first_word'  => 'Holy',
+            'second_word' => 'array',
+            'third_word'  => 'of',
+            'fourth_word' => 'objects',
+            'fifth_word'  => 'Batman',
+        ],
+    ]);
+
+$scrubbed = $cleaner->cleaners(['trim'])->scrub([
+        (object) [
+            'first_word'  => 'Holy',
+            'second_word' => 'mixed',
+            'third_word'  => ['bag', 'Batman'],
+        ],
+    ]);
+```
+
+## Available Scrubbers
+
+Mr. Clean comes with a bevy of pre-built scrubbers you can use:
 
 ### Boolean
 
