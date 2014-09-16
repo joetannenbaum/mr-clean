@@ -12,6 +12,12 @@ abstract class BaseScrubber implements ScrubberInterface {
 
     public $value;
 
+    /**
+     * Apply the options to the Scrubber
+     *
+     * @param array $options
+     */
+
     public function applyOptions($options)
     {
         $available_options = $this->options();
