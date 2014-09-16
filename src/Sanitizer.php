@@ -103,12 +103,14 @@ class Sanitizer {
         foreach ($scrubbers as $scrubber_key => $scrubber) {
             // Do we have an array of scrubbers for a specific key?
             if (is_array($scrubber)) {
-                if ($scrubber_key != $key) {
+                if ($scrubber_key == $key) {
+                    return $this->runScrubbers($value, $scrubber);
+                } elseif ($func = $this->retrieveScrubber($scrubber_key)) {
+                    $value = $this->applyScrubber($func, $value, $scrubber);
+                }
                     // If it's not for this key, keep on moving
                     continue;
-                }
 
-                return $this->runScrubbers($value, $scrubber);
             }
 
             if ($this->isScrubberClass($scrubber)) {
@@ -119,6 +121,30 @@ class Sanitizer {
         }
 
         return $value;
+    }
+
+    protected function applyScrubber($scrubber, $value, $options = [])
+    {
+        if (is_string($scrubber)) {
+            return $scrubber($value);
+        } elseif (is_object($scrubber)) {
+            $scrubber->value = $value;
+            $scrubber->applyOptions($options);
+            return $scrubber->scrub();
+        }
+
+        return null;
+    }
+
+    protected function retrieveScrubber($scrubber)
+    {
+        if ($this->isScrubberClass($scrubber)) {
+            return $this->getScrubber($scrubber);
+        } elseif (function_exists($scrubber)) {
+            return $scrubber;
+        }
+
+        return false;
     }
 
     /**
@@ -173,7 +199,7 @@ class Sanitizer {
      * @return \MrClean\Scrubber
      */
 
-    protected function getScrubber($scrubber, $value)
+    protected function getScrubber($scrubber, $value = null)
     {
         if ($this->isRegistered($scrubber)) {
             $class = $this->getRegisteredClassName($scrubber);
@@ -181,7 +207,10 @@ class Sanitizer {
             $class = $this->getScrubberClassName($scrubber);
         }
 
-        return new $class($value);
+        $cleaner = new $class();
+        $cleaner->value = $value;
+
+        return $cleaner;
     }
 
     /**

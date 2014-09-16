@@ -56,6 +56,13 @@ class Html extends BaseScrubber {
         return $this->value;
     }
 
+    public function options()
+    {
+        return [
+                'whitelist' => 'The tags that are allowed to be in the string (array)',
+            ];
+    }
+
     /**
      * Strip the value of any tags not on the whitelist
      */

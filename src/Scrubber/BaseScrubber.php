@@ -10,10 +10,22 @@ abstract class BaseScrubber implements ScrubberInterface {
      * @var string $value
      */
 
-    protected $value;
+    public $value;
 
-    public function __construct($value)
+    public function applyOptions($options)
     {
-        $this->value = $value;
+        $available_options = $this->options();
+
+        foreach ($options as $key => $option) {
+            if (array_key_exists($key, $available_options)) {
+                $this->$key = $option;
+            }
+        }
     }
+
+    public function options()
+    {
+        return [];
+    }
+
 }
